@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <!-- Progressive Web App manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <!-- Themed icons for PWA installation -->
+    <link rel="apple-touch-icon" href="/static/icon-192.png" />
+    <meta name="theme-color" content="#6366f1" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="header-content">
+          <h1 class="header-title">Habit Tracker</h1>
+          <p class="header-subtitle">Build your habits one day at a time.</p>
+        </div>
+      </header>
+      <main class="main-content">
+        <section id="habit-form-section" class="card">
+          <div class="card-header">
+            <h2 class="card-title">Add a New Habit</h2>
+            <p class="card-subtitle">Create a habit to track your daily progress</p>
+          </div>
+          <form id="habit-form" class="form">
+            <div class="form-group">
+              <label for="habit-name" class="form-label">Habit Name</label>
+              <input type="text" id="habit-name" class="form-input" placeholder="e.g., Morning meditation" required />
+            </div>
+            <div class="form-group">
+              <label for="habit-block" class="form-label">Time Block</label>
+              <select id="habit-block" class="form-select">
+                <option value="morning">🌅 Morning</option>
+                <option value="afternoon">☀️ Afternoon</option>
+                <option value="evening">🌅 Evening</option>
+                <option value="night">🌙 Night</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="habit-minutes" class="form-label">Target Minutes</label>
+              <input type="number" id="habit-minutes" class="form-input" placeholder="30" min="1" required />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <span class="btn-text">Create Habit</span>
+              <span class="btn-icon">+</span>
+            </button>
+          </form>
+        </section>
+
+        <section id="progress-section" class="card">
+          <div class="card-header">
+            <h2 class="card-title">Today's Progress</h2>
+            <p class="card-subtitle">Track your daily habit completion</p>
+          </div>
+          <div id="habits-container" class="habits-grid"></div>
+        </section>
+
+        <section id="speech-section" class="card speech-card">
+          <div class="card-header">
+            <h2 class="card-title">Daily Summary</h2>
+            <p class="card-subtitle">
+              Use your voice or type a summary of what you accomplished today. 
+              Our AI will automatically update your progress.
+            </p>
+          </div>
+          <div class="speech-content">
+            <textarea id="speech-text" class="speech-textarea" rows="3" 
+              placeholder="e.g. Morning meditation 15 minutes, AI reading 30 minutes"></textarea>
+            <div class="speech-buttons">
+              <button id="speak-btn" class="btn btn-voice">
+                <span class="btn-icon">🎤</span>
+                <span class="btn-text">Speak</span>
+              </button>
+              <button id="submit-speech" class="btn btn-secondary">
+                <span class="btn-text">Submit</span>
+                <span class="btn-icon">→</span>
+              </button>
+            </div>
+            <div id="model-status" class="model-status" style="display: none;">
+              <div class="loading-content">
+                <p class="loading-text">Loading speech recognition model... 
+                  <span id="model-progress" class="progress-text">0%</span>
+                </p>
+                <div class="progress-container">
+                  <progress id="model-progress-bar" class="progress-bar" max="100" value="0"></progress>
+                </div>
+              </div>
+            </div>
+            <p id="speech-status" class="speech-status"></p>
+          </div>
+        </section>
+      </main>
+      <footer class="footer">
+        <div class="footer-content">
+          <p class="footer-text">You're building a better you. Keep going! 🌟</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Vosk Browser Speech Recognition -->
+    <script src="https://cdn.jsdelivr.net/npm/vosk-browser@0.0.7/dist/vosk.js"></script>
+    <script src="/static/scripts.js"></script>
+    <!-- Register the service worker for offline support -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .catch((err) => console.error('Service Worker registration failed:', err));
+        });
+      }
+    </script>
+  </body>
+</html>

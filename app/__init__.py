@@ -1,0 +1,1 @@
+"""Make `habit_app.app` a package."""
